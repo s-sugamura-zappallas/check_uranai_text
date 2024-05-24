@@ -1,27 +1,24 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    outDir: 'dist' // この行が出力ディレクトリを指定しています
-  },
-  server: {
-    port: 5173, // ローカルサーバーのポート番号を明示的に指定
-    proxy: {
-      // ローカル開発用のプロキシ設定
-      '/api': {
-        target: 'http://localhost:8000',
-        changeOrigin: true,
-        //rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      // デプロイ用のプロキシ設定
-      '/api-prod': {
-        target: 'https://83g13mb9p1.execute-api.ap-northeast-1.amazonaws.com/prod',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api-prod/, '/api'),
+export default defineConfig(({ mode }) => {
+  // Load environment variables based on the current mode ('development', 'production', etc.)
+  const env = loadEnv(mode, process.cwd(), '')
+
+  return {
+    plugins: [react()],
+    build: {
+      outDir: 'dist' // この行が出力ディレクトリを指定しています
+    },
+    server: {
+      port: 5173, // ローカルサーバーのポート番号を明示的に指定
+      proxy: { // 環境に応じてプロキシ設定を変更
+        '/api': {
+          target: env.VITE_API_BASE_URL,
+          changeOrigin: true, // rewriteオプションを削除
+        },
       },
     },
-  },
+  }
 })

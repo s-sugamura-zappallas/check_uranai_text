@@ -14,9 +14,12 @@ interface ComparisonItem {
 type ComparisonResult = ComparisonItem[];
 
 const companies = ['rsa', 'zap']; // 会社名の配列
-const baseUrl = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_PROD_BASE_URL : import.meta.env.VITE_API_BASE_URL;
+
 
 function App() {
+
+  //const baseUrl = import.meta.env.ORIGIN_URL;
+
   const [selectedCompany, setSelectedCompany] = useState(companies[0]);
   const [html, setHtml] = useState('');
   const [csvFile, setCsvFile] = useState<File | null>(null);
@@ -52,7 +55,7 @@ function App() {
     formData.append('csv', csvFile);
 
     try {
-      const response = await fetch(`${baseUrl}/compare/toppage`, {
+      const response = await fetch('/api/compare/toppage', {
         method: 'POST',
         body: formData,
       });
