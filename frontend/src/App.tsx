@@ -14,6 +14,7 @@ interface ComparisonItem {
 type ComparisonResult = ComparisonItem[];
 
 const companies = ['rsa', 'zap']; // 会社名の配列
+const baseUrl = import.meta.env.MODE === 'production' ? import.meta.env.VITE_API_PROD_BASE_URL : import.meta.env.VITE_API_BASE_URL;
 
 function App() {
   const [selectedCompany, setSelectedCompany] = useState(companies[0]);
@@ -44,13 +45,14 @@ function App() {
     }
     setError(null);
 
+
     const formData = new FormData();
     formData.append('company', selectedCompany);
     formData.append('html', html);
     formData.append('csv', csvFile);
 
     try {
-      const response = await fetch('/api/compare/toppage', {
+      const response = await fetch(`${baseUrl}/compare/toppage`, {
         method: 'POST',
         body: formData,
       });

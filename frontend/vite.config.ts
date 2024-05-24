@@ -8,8 +8,20 @@ export default defineConfig({
     outDir: 'dist' // この行が出力ディレクトリを指定しています
   },
   server: {
+    port: 5173, // ローカルサーバーのポート番号を明示的に指定
     proxy: {
-      '/api': 'http://localhost:8000',
+      // ローカル開発用のプロキシ設定
+      '/api': {
+        target: 'http://localhost:8000',
+        changeOrigin: true,
+        //rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      // デプロイ用のプロキシ設定
+      '/api-prod': {
+        target: 'https://83g13mb9p1.execute-api.ap-northeast-1.amazonaws.com/prod',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api-prod/, '/api'),
+      },
     },
   },
 })
