@@ -1,0 +1,31 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+Resources:
+  MyFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: s3://check-uranai-text-lambda/cddc039fd339a8297a156c365c32333c
+      Handler: main.handler
+      Runtime: python3.9
+      Events:
+        CompareToppage:
+          Type: Api
+          Properties:
+            Path: /api/compare/toppage
+            Method: post
+        Hello:
+          Type: Api
+          Properties:
+            Path: /hello
+            Method: get
+        HelloTop:
+          Type: Api
+          Properties:
+            Path: /
+            Method: get
+    Metadata:
+      SamResourceId: MyFunction
