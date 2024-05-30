@@ -10,6 +10,7 @@ from fastapi.responses import JSONResponse
 from io import StringIO
 import pandas as pd
 from mangum import Mangum
+from fastapi.middleware.cors import CORSMiddleware
 
 
 # モジュールから関数インポート
@@ -21,6 +22,13 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # 許可するオリジンを指定
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.post("/api/compare/toppage")
 async def compare_toppage_endpoint(company: str = Form(...), html: str = Form(...), csv: UploadFile = File(...)):
