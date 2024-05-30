@@ -11,16 +11,25 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Use Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18.x'
+
     - name: Install dependencies
-      run: npm ci
+      run: |
+        cd frontend
+        npm ci
 
     - name: Build
-      run: npm run build    
+      run: |
+        cd frontend
+        npm run build
 
     - name: Deploy to S3
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: us-east-1
+        AWS_DEFAULT_REGION: ap-northeast-1
       run: |
-        aws s3 sync ./frontend s3://check-uranai-text-frontend --delete --debug
+        aws s3 sync ./frontend/dist s3://check-uranai-text-frontend --delete
