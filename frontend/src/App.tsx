@@ -55,7 +55,8 @@ function App() {
     formData.append('csv', csvFile);
 
     try {
-      const response = await fetch('/api/compare/toppage', {
+      const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+      const response = await fetch(`${apiBaseUrl}/api/compare/toppage`, {
         method: 'POST',
         body: formData,
       });
