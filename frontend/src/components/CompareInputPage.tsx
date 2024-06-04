@@ -1,7 +1,6 @@
 // src/components/CompareInputPage.tsx
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
-import axios from 'axios';
 
 interface CompareResult {
     index_input: number;
@@ -20,16 +19,19 @@ const CompareInputPage: React.FC = () => {
         e.preventDefault();
         try {
             const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
-            const response = await axios.post(`${apiBaseUrl}/api/compare/inputpage`, {
-                company,
-                input_html: inputHtml,
-                result_html: resultHtml,
-            }, {
+            const response = await fetch(`${apiBaseUrl}/api/compare/inputpage`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
+                body: JSON.stringify({
+                    company,
+                    input_html: inputHtml,
+                    result_html: resultHtml,
+                }),
             });
-            setCompareResult(response.data);
+            const data = await response.json();
+            setCompareResult(data);
         } catch (error) {
             console.error('Error comparing input pages:', error);
         }
