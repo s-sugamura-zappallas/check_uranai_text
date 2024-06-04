@@ -19,16 +19,14 @@ const CompareInputPage: React.FC = () => {
         e.preventDefault();
         try {
             const apiBaseUrl = import.meta.env.VITE_API_BASE_URL;
+            const formData = new FormData();
+            formData.append('company', company);
+            formData.append('input_html', inputHtml);
+            formData.append('result_html', resultHtml);
+
             const response = await fetch(`${apiBaseUrl}/api/compare/inputpage`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: JSON.stringify({
-                    company,
-                    input_html: inputHtml,
-                    result_html: resultHtml,
-                }),
+                body: formData,
             });
             const data = await response.json();
             setCompareResult(data);
