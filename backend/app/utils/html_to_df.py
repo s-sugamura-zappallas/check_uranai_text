@@ -99,3 +99,37 @@ def html_to_df_zap(html_str: str) -> pd.DataFrame:
     })
 
     return df
+
+
+def input_html_to_df_rsa(html_str: str) -> pd.DataFrame:
+    # BeautifulSoupでHTMLを解析
+    soup = BeautifulSoup(html_str, 'html.parser')
+
+    # 指定された条件で<p>タグのテキストを抽出
+    sub_titles = []
+    for idx, div in enumerate(soup.select('section#subMenuTitleLists div.submenu_title > p')):
+        sub_titles.append({'index_input': idx + 1, 'sub_title_input': div.get_text()})
+
+    # pandasのDataFrameに変換
+    df = pd.DataFrame(sub_titles)
+    
+    return df
+
+def input_html_to_df_zap(html_str: str) -> pd.DataFrame:
+    pass
+
+def result_html_to_df_rsa(html_str: str) -> pd.DataFrame:
+    soup = BeautifulSoup(html_str, 'html.parser')
+    result = []
+
+    subheading_divs = soup.find_all('div', class_=lambda x: x and x.startswith('result_subheading'))
+    for idx, div in enumerate(subheading_divs):
+        p_text = div.find('p').get_text(strip=True) if div.find('p') else ""
+        result.append({"index_result": idx + 1, "sub_title_result": p_text})
+
+    df = pd.DataFrame(result)
+    return df
+
+def result_html_to_df_zap(html_str: str) -> pd.DataFrame:
+    pass
+

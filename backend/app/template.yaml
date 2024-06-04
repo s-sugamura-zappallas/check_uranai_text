@@ -19,13 +19,8 @@ Resources:
           Properties:
             Path: /api/compare/toppage
             Method: post
-        Hello:
+        CompareInputpage:
           Type: Api
           Properties:
-            Path: /hello
-            Method: get
-        HelloTop:
-          Type: Api
-          Properties:
-            Path: /
-            Method: get
+            Path: /api/compare/inputpage
+            Method: post

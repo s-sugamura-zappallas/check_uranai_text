@@ -1,6 +1,0 @@
-{
-  "path": "/hello",
-  "requestContext": {},
-  "httpMethod": "GET",
-  "multiValueQueryStringParameters": {}
-}
